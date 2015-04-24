@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>New Tab Options</title>
+  <style>
+    body { font-size: 14px; }
+    h1 { font-size: 1em; font-weight: bold; }
+    input[type="text"] { max-width: 150px; }
+    label { display: inline-block; margin-bottom: 1.5em; width: 100%; }
+    label > * { margin: 0.5em 1em 0 1em; }
+    label span { display: inline-block; }
+    label span.note { font-size: 0.8em;   font-style: italic; margin-top: 0.25em; }
+    input[type="checkbox"] { margin-left: 0.25em; }
+    button { display: inline-block; }
+    div[role="status"] { color: tomato; display: inline-block; margin-left: 0.5em; }
+  </style>
+</head>
+
+<body>
+  <h1>Image Preferences</h1>
+
+  <label>
+    Which subreddit?
+    <br>
+    <span>www.reddit.com/r/</span>
+    <input type="text" role="subreddit" placeholder="e.g. EarthPorn">
+    <span class="note">Note: Images only appear if they are linked directly. That is, the submitted link must end in a valid image extension.</span>
+  </label>
+
+  <label>
+    From How Long Ago?
+    <br>
+    <select role="period">
+      <option value="hour">Past Hour</option>
+      <option value="day">Past Day</option>
+      <option value="week">Past Week</option>
+      <option value="month">Past Month</option>
+      <option value="year">Past Year</option>
+      <option value="all">All Time</option>
+    </select>
+  </label>
+
+  <h1>Time and Date Preferences</h1>
+  <label>
+    Use 24 Hour Clock?
+    <input type="checkbox" role="_24hr">
+  </label>
+
+  <button role="save">Save</button>
+  <div role="status"></div>
+
+  <script src="options.js"></script>
+</body>
+</html>
