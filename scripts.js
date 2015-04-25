@@ -47,16 +47,17 @@ function checkImgUrl(url) {
   return /\.(?:jpg|png|gif)(?!.)/.test(url) ? url : false
 }
 
-function setPost(data) {
+function setPost(data, prefs) {
   var posts = data.data.children;
   posts[posts.length] = { data: {
     url: "/img/default.jpg",
     permalink: "",
-    title: "No image link could be found in the Top 25 posts.",
+    title: "No image link could be found in the top posts.",
     warning: true
   }};
 
   for (var i = 0; i < posts.length; i++) {
+    if (prefs.nsfw === false && posts[i].data.over_18 === true) { continue; }
     var imgUrl = checkImgUrl(posts[i].data.url);
 
     if (imgUrl) {
@@ -79,14 +80,13 @@ function setPost(data) {
   document.querySelector("[role='background']").classList.remove("hide");
 }
 
-function getPosts(url) {
+function getPosts(url, prefs) {
   var req = new XMLHttpRequest();
 
-  // req.onload = onReqLoad;
   req.onreadystatechange = function() {
     if (req.readyState === 4) {
       if (req.status === 200) {
-        setPost(JSON.parse(this.responseText));
+        setPost(JSON.parse(this.responseText), prefs);
       } else {
         setPost({ data: { children: [{
           data: {
@@ -95,7 +95,7 @@ function getPosts(url) {
             title: "Uh oh. An error occurred getting posts.",
             warning: true
           }
-        }] } });
+        }] } }, prefs);
       }
     }
   }
@@ -115,6 +115,6 @@ document.addEventListener('DOMContentLoaded', function() {
         "/top.json?sort=top&t=",
         (preferences.period || "day")
       );
-      getPosts(url);
+      getPosts(url, { nsfw: preferences.nsfw });
     });
 });
