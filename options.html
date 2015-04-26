@@ -6,10 +6,11 @@
     body { font-size: 14px; }
     h1 { font-size: 1em; font-weight: bold; }
     input[type="text"] { max-width: 150px; }
-    label { display: inline-block; margin-bottom: 1.5em; width: 100%; }
-    label > * { margin: 0.5em 1em 0 1em; }
-    label span { display: inline-block; }
-    label span.note { font-size: 0.8em;   font-style: italic; margin-top: 0.25em; }
+    label { display: inline-block; }
+    .setting { margin: 1em 0; }
+    .setting > :not(label) { margin: 0.5em 0 0 1em; }
+    .setting span { display: inline-block; }
+    .setting span.note { font-size: 0.8em;   font-style: italic; margin-top: 0.25em; }
     input[type="checkbox"] { margin-left: 0.25em; }
     button { display: inline-block; }
     div[role="status"] { color: tomato; display: inline-block; margin-left: 0.5em; }
@@ -19,16 +20,16 @@
 <body>
   <h1>Image Preferences</h1>
 
-  <label>
-    Which subreddit?
+  <div class="setting">
+    <label>Which subreddit?</label>
     <br>
     <span>www.reddit.com/r/</span>
     <input type="text" role="subreddit" placeholder="e.g. EarthPorn">
     <span class="note">Note: Images only appear if they are linked directly. That is, the submitted link must end in a valid image extension.</span>
-  </label>
+  </div>
 
-  <label>
-    From How Long Ago?
+  <div class="setting">
+    <label>From How Long Ago?</label>
     <br>
     <select role="period">
       <option value="hour">Past Hour</option>
@@ -38,18 +39,19 @@
       <option value="year">Past Year</option>
       <option value="all">All Time</option>
     </select>
-  </label>
+  </div>
 
-  <label>
-    Allow NSFW images?
+  <div class="setting">
+    <label>Allow NSFW images?</label>
     <input type="checkbox" role="nsfw">
-  </label>
+  </div>
 
   <h1>Time and Date Preferences</h1>
-  <label>
-    Use 24 Hour Clock?
+  <div class="setting">
+    <label>Use 24 Hour Clock?</label>
     <input type="checkbox" role="_24hr">
-  </label>
+  </div>
+
 
   <button role="save">Save</button>
   <div role="status"></div>

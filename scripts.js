@@ -1,35 +1,35 @@
 function formatTime(time, _24hr) {
-  var h = time.getHours();
-  var m = time.getMinutes();
+  var h = time.getHours(),
+      m = time.getMinutes();
   if (m < 10) { m = "0".concat(m); }
 
   if (_24hr) {
     return [h, m].join(":");
-  } else {
-    if (h > 12) {
-      var pm = true;
-      h = h % 12;
-    }
-    if (h === 0) { h = 12; }
-    return [h, m].join(":") + (pm ? " pm" : " am");
   }
+
+  if (h > 12) {
+    var pm = true;
+    h = h % 12;
+  }
+  if (h === 0) { h = 12; }
+  return [h, m].join(":") + (pm ? " pm" : " am");
 }
 
 function formatDate(date) {
-  var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 
-  var day = date.getDay();
-  var month = date.getMonth();
-  var dayOfMonth = date.getDate();
+      day = date.getDay(),
+      month = date.getMonth(),
+      dayOfMonth = date.getDate();
 
   return days[day] + ", " + months[month] + " " + dayOfMonth;
 }
 
 function setDateTime(_24hr) {
-  var now = new Date;
-  var time = formatTime(now, _24hr);
-  var parts = time.split(" ");
+  var now = new Date(),
+      time = formatTime(now, _24hr),
+      parts = time.split(" ");
 
   timeEl = document.querySelector("[role='time']");
   timeEl.textContent = parts[0];
@@ -44,10 +44,10 @@ function setDateTime(_24hr) {
 }
 
 function checkImgUrl(url) {
-  return /\.(?:jpg|png|gif)(?!.)/.test(url) ? url : false
+  return /\.(?:jpg|png|gif)(?!.)/.test(url) ? url : false;
 }
 
-function setPost(data, prefs) {
+function getPost(data, prefs) {
   var posts = data.data.children;
   posts[posts.length] = { data: {
     url: "/img/default.jpg",
@@ -58,35 +58,34 @@ function setPost(data, prefs) {
 
   for (var i = 0; i < posts.length; i++) {
     if (prefs.nsfw === false && posts[i].data.over_18 === true) { continue; }
-    var imgUrl = checkImgUrl(posts[i].data.url);
+    if (checkImgUrl(posts[i].data.url)) { return posts[i]; }
+  }
+}
 
-    if (imgUrl) {
-      document.querySelector("[role='background']").style.backgroundImage =
-        "url('".concat(imgUrl, "')");
-      document.querySelector("[role='link']").setAttribute("href",
-        "http://www.reddit.com".concat(posts[i].data.permalink));
-      document.querySelector("[role='title']").textContent = posts[i].data.title;
+function setPost(post) {
+  document.querySelector("[role='background']").style.backgroundImage =
+    "url('".concat(post.data.url, "')");
+  document.querySelector("[role='link']").setAttribute("href",
+    "http://www.reddit.com".concat(post.data.permalink));
+  document.querySelector("[role='title']").textContent = post.data.title;
 
-      linkIconEl = document.querySelector("[role='link-icon']");
-      if (posts[i].data.warning) {
-        linkIconEl.classList.add("warning");
-      } else {
-        linkIconEl.classList.remove("warning");
-      }
-      break;
-    }
+  linkIconEl = document.querySelector("[role='link-icon']");
+  if (post.data.warning) {
+    linkIconEl.classList.add("warning");
+  } else {
+    linkIconEl.classList.remove("warning");
   }
 
   document.querySelector("[role='background']").classList.remove("hide");
 }
 
-function getPosts(url, prefs) {
+function getAllPosts(url, prefs) {
   var req = new XMLHttpRequest();
 
   req.onreadystatechange = function() {
     if (req.readyState === 4) {
       if (req.status === 200) {
-        setPost(JSON.parse(this.responseText), prefs);
+        setPost(getPost(JSON.parse(this.responseText), prefs));
       } else {
         setPost({ data: { children: [{
           data: {
@@ -95,7 +94,7 @@ function getPosts(url, prefs) {
             title: "Uh oh. An error occurred getting posts.",
             warning: true
           }
-        }] } }, prefs);
+        }] } });
       }
     }
   }
@@ -115,6 +114,6 @@ document.addEventListener('DOMContentLoaded', function() {
         "/top.json?sort=top&t=",
         (preferences.period || "day")
       );
-      getPosts(url, { nsfw: preferences.nsfw });
+      getAllPosts(url, { nsfw: preferences.nsfw });
     });
 });

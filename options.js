@@ -1,8 +1,8 @@
 function saveOptions() {
-  var subreddit = document.querySelector("[role='subreddit']").value;
-  var period = document.querySelector("[role='period']").value;
-  var nsfw = document.querySelector("[role='nsfw']").checked;
-  var _24hr = document.querySelector("[role='_24hr']").checked;
+  var subreddit = document.querySelector("[role='subreddit']").value,
+      period = document.querySelector("[role='period']").value,
+      nsfw = document.querySelector("[role='nsfw']").checked,
+      _24hr = document.querySelector("[role='_24hr']").checked;
 
   chrome.storage.sync.set({
     subreddit: subreddit,
