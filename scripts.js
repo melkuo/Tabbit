@@ -105,15 +105,26 @@ function getAllPosts(url, prefs) {
 document.addEventListener('DOMContentLoaded', function() {
   chrome.storage.sync.get(
     null
-    , function(preferences) {
-      setDateTime(preferences._24hr);
-      setInterval(function() { setDateTime(preferences._24hr); } , 1000);
+    , function(prefs) {
+      setDateTime(prefs._24hr);
+      setInterval(function() { setDateTime(prefs._24hr); } , 1000);
 
-      var url = "http://www.reddit.com/r/".concat(
-        (preferences.subreddit || "EarthPorn"),
+      if (!prefs.subreddit) { prefs.subreddit = "/r/EarthPorn"; }
+
+      if (prefs.subreddit.charAt(0) !== "/") {
+        prefs.subreddit = "/".concat(prefs.subreddit);
+      }
+
+      if ((prefs.subreddit.indexOf("/m/") === -1) &&
+          (prefs.subreddit.indexOf("/r/") === -1)) {
+        prefs.subreddit = "/r".concat(prefs.subreddit);
+      }
+
+      var url = "http://www.reddit.com".concat(
+        (prefs.subreddit),
         "/top.json?sort=top&t=",
-        (preferences.period || "day")
+        (prefs.period || "day")
       );
-      getAllPosts(url, { nsfw: preferences.nsfw });
+      getAllPosts(url, { nsfw: prefs.nsfw });
     });
 });

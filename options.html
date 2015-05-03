@@ -4,15 +4,14 @@
   <title>New Tab Options</title>
   <style>
     body { font-size: 14px; }
-    h1 { font-size: 1em; font-weight: bold; }
-    input[type="text"] { max-width: 150px; }
-    label { display: inline-block; }
+    h1 { font-size: 1em; font-weight: bold; margin: 1.5em 0 0; }
+    input[type="checkbox"] { margin: 0 0 0.25em 0.25em; }
+    label, button { display: inline-block; }
     .setting { margin: 1em 0; }
-    .setting > :not(label) { margin: 0.5em 0 0 1em; }
-    .setting span { display: inline-block; }
-    .setting span.note { font-size: 0.8em;   font-style: italic; margin-top: 0.25em; }
-    input[type="checkbox"] { margin-left: 0.25em; }
-    button { display: inline-block; }
+    .setting span,
+    .setting select { display: inline-block; margin: 0.5em 0 0 1em; }
+    .setting span.note { font-size: 0.8em; font-style: italic; margin-top: 0.75em; }
+    .setting > input[type="text"] { margin-left: 0; width: 225px; }
     div[role="status"] { color: tomato; display: inline-block; margin-left: 0.5em; }
   </style>
 </head>
@@ -21,11 +20,15 @@
   <h1>Image Preferences</h1>
 
   <div class="setting">
-    <label>Which subreddit?</label>
+    <label>Which subreddit or multireddit?</label>
     <br>
-    <span>www.reddit.com/r/</span>
-    <input type="text" role="subreddit" placeholder="e.g. EarthPorn">
-    <span class="note">Note: Images only appear if they are linked directly. That is, the submitted link must end in a valid image extension.</span>
+    <span>www.reddit.com</span>
+    <input type="text" role="subreddit" placeholder="/r/EarthPorn">
+    <span class="note">
+      For multireddits, input the entire url after "reddit.com". <br>
+      E.g. <i>"/user/kjoneslol/m/sfwpornnetwork"</i>
+    </span>
+    <span class="note">Images only appear if they are linked directly. That is, the submitted link must end in a valid image extension.</span>
   </div>
 
   <div class="setting">
