@@ -7,7 +7,7 @@ function formatTime(time, _24hr) {
     return [h, m].join(":");
   }
 
-  if (h > 12) {
+  if (h >= 12) {
     var pm = true;
     h = h % 12;
   }
