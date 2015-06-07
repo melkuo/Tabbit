@@ -57,10 +57,12 @@ a {
 }
 
 .link {
-  cursor: pointer;
   bottom: 0.5em;
+  box-sizing: border-box;
+  cursor: pointer;
   padding: 1em;
   position: absolute;
+  width: 100%;
 }
 
 .link-icon,
@@ -84,10 +86,15 @@ a {
 .link span {
   display: inline-block;
   margin-left: 0.25em;
+  max-width: 95%;
   opacity: 0;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
   text-shadow: 0 0 0.75em rgba(0, 0, 0, 0.5);
   transition: all 0.25s;
+  vertical-align: middle;
   visibility: hidden;
+  white-space: nowrap;
 }
 
 .link:hover span {
