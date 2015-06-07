@@ -59,17 +59,18 @@ a {
 .link {
   bottom: 0.5em;
   box-sizing: border-box;
+  display: flex;
   cursor: pointer;
-  padding: 1em;
+  padding: 1.5em;
   position: absolute;
   width: 100%;
 }
 
 .link-icon,
 .link-icon-warning {
-  height: auto;
+  flex-shrink: 0;
+  height: 18px;
   transition: opacity 0.25s;
-  vertical-align: middle;
   width: 18px;
 }
 
@@ -84,15 +85,12 @@ a {
 }
 
 .link span {
-  display: inline-block;
   margin-left: 0.25em;
-  max-width: 95%;
   opacity: 0;
   overflow-x: hidden;
   text-overflow: ellipsis;
   text-shadow: 0 0 0.75em rgba(0, 0, 0, 0.5);
   transition: all 0.25s;
-  vertical-align: middle;
   visibility: hidden;
   white-space: nowrap;
 }
