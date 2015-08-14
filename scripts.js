@@ -19,9 +19,9 @@ function formatDate(date) {
   var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
       months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 
-      day = date.getDay(),
-      month = date.getMonth(),
-      dayOfMonth = date.getDate();
+  day = date.getDay(),
+  month = date.getMonth(),
+  dayOfMonth = date.getDate();
 
   return days[day] + ", " + months[month] + " " + dayOfMonth;
 }
@@ -43,30 +43,55 @@ function setDateTime(_24hr) {
   document.querySelector("[role='date']").textContent = formatDate(now);
 }
 
-function checkImgUrl(url) {
-  return /\.(?:jpg|png|gif)(?!.)/.test(url) ? url : false;
+function getType(post) {
+  if (!/\.(jpg|png|gif)(?!v)/.test(post.data.url)) {
+    return "unsupported";
+  }
+  else if (/\.gif/.test(post.data.url)) {
+    return "gif";
+  } else if (!post.data.preview) {
+    return "noPreview";
+  } else {
+    return "preview";
+  }
 }
 
 function getPost(data, prefs) {
   var posts = data.data.children;
-  posts[posts.length] = { data: {
-    url: "/img/default.jpg",
-    permalink: "",
-    title: "No image link could be found in the top posts.",
-    warning: true
-  }};
 
   for (var i = 0; i < posts.length; i++) {
     if (prefs.nsfw === false && posts[i].data.over_18 === true) { continue; }
-    if (checkImgUrl(posts[i].data.url)) { return posts[i]; }
+    var type = getType(posts[i])
+
+    if (type === "unsupported") {
+      continue;
+    }
+    else if (type === "gif" || type === "noPreview") {
+      posts[i].data.imgUrl = posts[i].data.url;
+      return posts[i];
+    } else if (type === "preview") {
+      var images = posts[i].data.preview.images;
+
+      for (var j = 0; j < images.length; j++) {
+        posts[i].data.imgUrl = images[j].source.url;
+        return posts[i];
+      }
+    }
   }
+
+  return { data: {
+    imgUrl: "/img/default.jpg",
+    permalink: "",
+    title: "No image could be found in the top posts.",
+    warning: true
+  }}
 }
 
 function setPost(post) {
   document.querySelector("[role='background']").style.backgroundImage =
-    "url('".concat(post.data.url, "')");
+    "url('" + post.data.imgUrl + "')";
   document.querySelector("[role='link']").setAttribute("href",
-    "http://www.reddit.com".concat(post.data.permalink));
+    "http://www.reddit.com" + post.data.permalink);
   document.querySelector("[role='title']").textContent = post.data.title;
 
   linkIconEl = document.querySelector("[role='link-icon']");
@@ -87,14 +112,14 @@ function getAllPosts(url, prefs) {
       if (req.status === 200) {
         setPost(getPost(JSON.parse(this.responseText), prefs));
       } else {
-        setPost({ data: { children: [{
+        setPost({
           data: {
-            url: "/img/default.jpg",
+            imgUrl: "/img/default.jpg",
             permalink: "",
             title: "Uh oh. An error occurred getting posts.",
             warning: true
           }
-        }] } });
+        });
       }
     }
   }
@@ -112,19 +137,15 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!prefs.subreddit) { prefs.subreddit = "/r/EarthPorn"; }
 
       if (prefs.subreddit.charAt(0) !== "/") {
-        prefs.subreddit = "/".concat(prefs.subreddit);
+        prefs.subreddit = "/" + prefs.subreddit;
       }
 
       if ((prefs.subreddit.indexOf("/m/") === -1) &&
           (prefs.subreddit.indexOf("/r/") === -1)) {
-        prefs.subreddit = "/r".concat(prefs.subreddit);
+        prefs.subreddit = "/r" + prefs.subreddit;
       }
 
-      var url = "http://www.reddit.com".concat(
-        (prefs.subreddit),
-        "/top.json?sort=top&t=",
-        (prefs.period || "day")
-      );
+      var url = "http://www.reddit.com" + (prefs.subreddit) + "/top.json?sort=top&t=" +(prefs.period || "day");
       getAllPosts(url, { nsfw: prefs.nsfw });
     });
 });
