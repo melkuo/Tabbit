@@ -7,6 +7,7 @@
     h1 { font-size: 1em; font-weight: bold; margin: 1.5em 0 0; }
     input[type="checkbox"] { margin: 0 0 0.25em 0.25em; }
     label, button { display: inline-block; }
+    .nowrap { white-space: nowrap; }
     .setting { margin: 1em 0; }
     .setting span,
     .setting select { display: inline-block; margin: 0.5em 0 0 1em; }
@@ -25,10 +26,10 @@
     <span>www.reddit.com</span>
     <input type="text" role="subreddit" placeholder="/r/EarthPorn">
     <span class="note">
-      For multireddits, input the entire url after "reddit.com". <br>
-      E.g. <i>"/user/kjoneslol/m/sfwpornnetwork"</i>
+      For multireddits, input the entire url after "reddit.com",<br>
+      e.g. <i class="nowrap">"/user/kjoneslol/m/sfwpornnetwork"</i>.
     </span>
-    <span class="note">Images only appear if they are linked directly. That is, the submitted link must end in a valid image extension.</span>
+    <span class="note">Only public multireddits are supported.</span>
   </div>
 
   <div class="setting">
@@ -59,6 +60,6 @@
   <button role="save">Save</button>
   <div role="status"></div>
 
-  <script src="options.js"></script>
+  <script src="scripts/options.js"></script>
 </body>
 </html>
