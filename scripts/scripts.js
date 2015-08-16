@@ -46,8 +46,7 @@ function setDateTime(_24hr) {
 function getType(post) {
   if (!/\.(jpg|png|gif)(?!v)/.test(post.data.url)) {
     return "unsupported";
-  }
-  else if (/\.gif/.test(post.data.url)) {
+  } else if (/\.gif/.test(post.data.url)) {
     return "gif";
   } else if (!post.data.preview) {
     return "noPreview";
@@ -61,12 +60,11 @@ function getPost(data, prefs) {
 
   for (var i = 0; i < posts.length; i++) {
     if (prefs.nsfw === false && posts[i].data.over_18 === true) { continue; }
-    var type = getType(posts[i])
 
+    var type = getType(posts[i]);
     if (type === "unsupported") {
       continue;
-    }
-    else if (type === "gif" || type === "noPreview") {
+    } else if (type === "gif" || type === "noPreview") {
       posts[i].data.imgUrl = posts[i].data.url;
       return posts[i];
     } else if (type === "preview") {
@@ -90,8 +88,10 @@ function getPost(data, prefs) {
 function setPost(post) {
   document.querySelector("[role='background']").style.backgroundImage =
     "url('" + post.data.imgUrl + "')";
-  document.querySelector("[role='link']").setAttribute("href",
-    "http://www.reddit.com" + post.data.permalink);
+  if (post.data.permalink) {
+    document.querySelector("[role='link']").setAttribute("href",
+      "http://www.reddit.com" + post.data.permalink);
+  }
   document.querySelector("[role='title']").textContent = post.data.title;
 
   linkIconEl = document.querySelector("[role='link-icon']");
@@ -107,7 +107,7 @@ function setPost(post) {
 function getAllPosts(url, prefs) {
   var req = new XMLHttpRequest();
 
-  req.onreadystatechange = function() {
+  req.onload = function() {
     if (req.readyState === 4) {
       if (req.status === 200) {
         setPost(getPost(JSON.parse(this.responseText), prefs));
@@ -148,4 +148,14 @@ document.addEventListener('DOMContentLoaded', function() {
       var url = "http://www.reddit.com" + (prefs.subreddit) + "/top.json?sort=top&t=" +(prefs.period || "day");
       getAllPosts(url, { nsfw: prefs.nsfw });
     });
+
+  document.querySelector("[role='settings']").addEventListener("click", function() {
+    console.log("in fn")
+    if(chrome.runtime.openOptionsPage) {
+      chrome.runtime.openOptionsPage();
+    } else {
+      window.open(chrome.runtime.getURL('options.html'));
+    }
+  });
 });
+

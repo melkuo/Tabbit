@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <title>New Tab</title>
   <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="styles.css">
-  <script src="scripts.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="scripts/scripts.js"></script>
 </head>
 <body>
   <div role="background" class="background hide">
@@ -15,11 +15,14 @@
       <div role="date" class="date"></div>
     </div>
     <div class="post">
-      <a role="link" class="link">
-        <img src="img/link-icon.png" role="link-icon" class="link-icon" alt="Link">
-        <img src="img/link-icon-warning.png" class="link-icon-warning" alt="Heads Up!">
-        <span role="title" class="title"></span>
-      </a>
+      <div class="footer">
+        <a role="link" class="link">
+          <img src="img/link-icon.png" role="link-icon" class="link-icon" alt="Link">
+          <img src="img/link-icon-warning.png" class="link-icon-warning" alt="Heads Up!">
+          <span role="title" class="title"></span>
+        </a>
+        <a role="settings" class="settings"><img src="img/link-settings.png" class="settings-icon" alt="Settings"></a>
+      </div>
     </div>
   </div>
 </body>
