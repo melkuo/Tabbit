@@ -68,7 +68,6 @@ a {
 
 .link {
   cursor: pointer;
-  flex-grow: 1;
   max-width: 95%;
 }
 
@@ -77,6 +76,8 @@ a {
 .settings-icon {
   cursor: pointer;
   height: 18px;
+  opacity: 0.5;
+  transition: opacity 0.25s;
   width: 18px;
 }
 
@@ -103,7 +104,8 @@ a {
   white-space: nowrap;
 }
 
-.link:hover span {
+.link:hover *,
+.settings-icon:hover {
   opacity: 1;
   visibility: visible;
 }
