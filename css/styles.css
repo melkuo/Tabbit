@@ -68,7 +68,7 @@ a {
 
 .link {
   cursor: pointer;
-  max-width: 95%;
+  width: 95%;
 }
 
 .link-icon,
