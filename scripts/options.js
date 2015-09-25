@@ -1,4 +1,4 @@
-function saveOptions() {
+function onClickSave() {
   var subreddit = document.querySelector("[role='subreddit']").value,
       period = document.querySelector("[role='period']").value,
       nsfw = document.querySelector("[role='nsfw']").checked,
@@ -16,6 +16,8 @@ function saveOptions() {
       status.textContent = "";
     }, 2000);
   });
+
+  _gaq.push(['_trackEvent', subreddit, 'set']);
 }
 
 function restoreOptions() {
@@ -31,6 +33,7 @@ function restoreOptions() {
     document.querySelector("[role='_24hr']").checked = items._24hr;
   });
 }
+
 document.addEventListener("DOMContentLoaded", restoreOptions);
 document.querySelector("[role='save']").addEventListener("click",
-    saveOptions);
+    onClickSave);
