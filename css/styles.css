@@ -2,6 +2,11 @@
   background-color: aliceblue;
 }
 
+@font-face {
+  font-family: 'modernpics';
+  src: url('../font/modernpics.otf');
+}
+
 html,
 body {
   color: white;
@@ -47,6 +52,16 @@ a {
   text-shadow: 0 0 1em rgba(0, 0, 0, 0.5);
 }
 
+.icon {
+  cursor: pointer;
+  font-family: 'modernpics';
+  font-size: 1.5em;
+  opacity: 0.5;
+  text-shadow: 0 0 0.75em rgba(0, 0, 0, 0.5);
+  transition: opacity 0.25s;
+  vertical-align: 0.1em;
+}
+
 .time {
   font-size: 3em;
 }
@@ -67,25 +82,14 @@ a {
 }
 
 .link {
-  cursor: pointer;
   width: 95%;
-}
-
-.link-icon,
-.settings-icon {
-  cursor: pointer;
-  fill: white;
-  height: 18px;
-  opacity: 0.5;
-  transition: opacity 0.25s;
-  width: 18px;
 }
 
 .link-icon.warning {
   fill: firebrick;
 }
 
-.link span {
+.link .title {
   display: inline-block;
   margin-left: 0.5em;
   max-width: 95%;
