@@ -1,7 +1,7 @@
-function formatTime(time, _24hr) {
-  var h = time.getHours(),
-      m = time.getMinutes();
-  if (m < 10) { m = "0".concat(m); }
+function formatTime(now, _24hr) {
+  var h = now.getHours(),
+      m = now.getMinutes();
+  if (m < 10) { m = "0" + m; }
 
   if (_24hr) {
     return [h, m].join(":");
@@ -15,20 +15,19 @@ function formatTime(time, _24hr) {
   return [h, m].join(":") + (pm ? " pm" : " am");
 }
 
-function formatDate(date) {
+function formatDate(now) {
   var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
       months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 
-  day = date.getDay(),
-  month = date.getMonth(),
-  dayOfMonth = date.getDate();
+  day = now.getDay(),
+  month = now.getMonth(),
+  dayOfMonth = now.getDate();
 
   return days[day] + ", " + months[month] + " " + dayOfMonth;
 }
 
-function setDateTime(_24hr) {
-  var now = new Date(),
-      time = formatTime(now, _24hr),
+function setTime(now, _24hr) {
+  var time = formatTime(now, _24hr),
       parts = time.split(" ");
 
   timeEl = document.querySelector("[role='time']");
@@ -39,7 +38,9 @@ function setDateTime(_24hr) {
     span.textContent = parts[1];
     timeEl.appendChild(span);
   }
+}
 
+function setDate(now) {
   document.querySelector("[role='date']").textContent = formatDate(now);
 }
 
@@ -131,13 +132,22 @@ document.addEventListener('DOMContentLoaded', function() {
   chrome.storage.sync.get(
     null
     , function(prefs) {
-      setDateTime(prefs._24hr);
-      setInterval(function() { setDateTime(prefs._24hr); } , 1000);
+      var now = new Date();
+
+      if (prefs.showTime) {
+        setTime(now, prefs._24hr);
+        setInterval(function() { setTime(now, prefs._24hr); } , 1000);
+      }
+
+      if (prefs.showDate) {
+        setDate(now);
+        setInterval(function() { setDate(now); } , 1000);
+      }
 
       if (!prefs.subreddit) { prefs.subreddit = "/r/EarthPorn"; }
 
       if (prefs.subreddit.charAt(0) !== "/") {
-        prefs.subreddit = "/" + prefs.subreddit;
+        prefs.subreddit = "/" + (prefs.subreddit);
       }
 
       if ((prefs.subreddit.indexOf("/m/") === -1) &&
@@ -150,7 +160,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
   document.querySelector("[role='settings']").addEventListener("click", function() {
-    console.log("in fn")
     if(chrome.runtime.openOptionsPage) {
       chrome.runtime.openOptionsPage();
     } else {

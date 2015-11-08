@@ -4,15 +4,12 @@
   <title>New Tab Options</title>
   <style>
     body { font-size: 14px; }
-    h1 { font-size: 1em; font-weight: bold; margin: 1.5em 0 0; }
-    input[type="checkbox"] { margin: 0 0 0.25em 0.25em; }
-    label, button { display: inline-block; }
+    h1 { font-size: 1em; font-weight: bold; margin: 2em 0 0.5em; }
+    input[type="text"] { margin-left: 0; width: 225px; }
     .nowrap { white-space: nowrap; }
-    .setting { margin: 1em 0; }
-    .setting span,
-    .setting select { display: inline-block; margin: 0.5em 0 0 1em; }
-    .setting span.note { font-size: 0.8em; font-style: italic; margin-top: 0.75em; }
-    .setting > input[type="text"] { margin-left: 0; width: 225px; }
+    .setting span { display: inline-block; margin: 0.5em 0 0 1em; }
+    span.note { font-size: 0.8em; font-style: italic; margin: 0.75em; }
+    a.helpLink { display: block; margin-bottom: 2em; }
     div[role="status"] { color: tomato; display: inline-block; margin-left: 0.5em; }
   </style>
   <script>
@@ -42,34 +39,44 @@
     <span class="note">Only public multireddits are supported.</span>
   </div>
 
-  <div class="setting">
-    <label>From How Long Ago?</label>
-    <br>
-    <select role="period">
-      <option value="hour">Past Hour</option>
-      <option value="day">Past Day</option>
-      <option value="week">Past Week</option>
-      <option value="month">Past Month</option>
-      <option value="year">Past Year</option>
-      <option value="all">All Time</option>
-    </select>
-  </div>
-
-  <div class="setting">
-    <label>Allow NSFW images?</label>
-    <input type="checkbox" role="nsfw">
-  </div>
+  <table>
+    <tr>
+      <td><label>From how long ago?</label></td>
+      <td>
+        <select role="period">
+          <option value="hour">Past Hour</option>
+          <option value="day">Past Day</option>
+          <option value="week">Past Week</option>
+          <option value="month">Past Month</option>
+          <option value="year">Past Year</option>
+          <option value="all">All Time</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td><label>Allow NSFW images?</label></td>
+      <td><input type="checkbox" role="nsfw"></td>
+    </tr>
+  </table>
 
   <h1>Time and Date Preferences</h1>
-  <div class="setting">
-    <label>Use 24 Hour Clock?</label>
-    <input type="checkbox" role="_24hr">
-  </div>
+  <table>
+    <tr>
+      <td><label for="_24hr">Use 24-hour clock?</label></td>
+      <td><input type="checkbox" role="_24hr" id="_24hr"></td>
+    </tr>
+    <tr>
+      <td><label for="showTime">Show time?</label></td>
+      <td><input type="checkbox" role="showTime" id="showTime"></td>
+    </tr>
+    <tr>
+      <td><label for="showDate">Show date?</label></td>
+      <td><input type="checkbox" role="showDate" id="showDate"></td>
+    </tr>
+  </table>
 
   <h1>Help</h1>
-  <div class="setting">
-    <a href="https://chrome.google.com/webstore/detail/tabbit/ddbkjbhabfgacalhbinalknoecialihh/support">Bugs, feedback or suggestions?</a>
-  </div>
+  <a href="https://chrome.google.com/webstore/detail/tabbit/ddbkjbhabfgacalhbinalknoecialihh/support" class="helpLink">Bugs, feedback or suggestions?</a>
 
   <button role="save">Save</button>
   <div role="status"></div>
