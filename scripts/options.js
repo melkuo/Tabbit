@@ -6,6 +6,8 @@ function onClickSave() {
       showTime = document.querySelector("[role='showTime']").checked;
       showDate = document.querySelector("[role='showDate']").checked;
 
+  ga('send', 'event', 'prefs', 'subreddit', subreddit);
+
   chrome.storage.sync.set({
     subreddit: subreddit,
     period: period,
@@ -20,8 +22,6 @@ function onClickSave() {
       status.textContent = "";
     }, 2000);
   });
-
-  _gaq.push(['_trackEvent', subreddit, 'set']);
 }
 
 function restoreOptions() {
