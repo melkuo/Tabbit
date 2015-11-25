@@ -4,7 +4,6 @@
   "version": "1.1.5",
   "description": "See the top image from a Reddit subreddit whenever you open a new tab.",
   "author": "Melody Kuo",
-  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
   "chrome_url_overrides": {
     "newtab": "index.html"
   },

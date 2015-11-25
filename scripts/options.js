@@ -6,8 +6,6 @@ function onClickSave() {
       showTime = document.querySelector("[role='showTime']").checked;
       showDate = document.querySelector("[role='showDate']").checked;
 
-  ga('send', 'event', 'prefs', 'subreddit', subreddit);
-
   chrome.storage.sync.set({
     subreddit: subreddit,
     period: period,
@@ -17,7 +15,7 @@ function onClickSave() {
     showDate: showDate
   }, function() {
     var status = document.querySelector("[role='status']");
-    status.textContent = "Preferences Saved";
+    status.textContent = "Saved!";
     setTimeout(function() {
       status.textContent = "";
     }, 2000);

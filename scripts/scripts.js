@@ -107,7 +107,6 @@ function setPost(post) {
 
 function getAllPosts(url, prefs) {
   var req = new XMLHttpRequest();
-
   req.onload = function() {
     if (req.readyState === 4) {
       if (req.status === 200) {

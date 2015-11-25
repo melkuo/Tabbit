@@ -78,7 +78,7 @@ a {
   cursor: pointer;
   font-family: 'modernpics';
   font-size: 1.5em;
-  opacity: 0.75;
+  opacity: 0.5;
   text-shadow: 0 0 0.75em rgb(0, 0, 0);
   transition: opacity 0.25s;
   vertical-align: 0.1em;
