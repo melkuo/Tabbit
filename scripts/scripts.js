@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!prefs.subreddit) { prefs.subreddit = "/r/EarthPorn"; }
 
       if (prefs.subreddit.charAt(0) !== "/") {
-        prefs.subreddit = "/" + (prefs.subreddit);
+        prefs.subreddit = "/" + prefs.subreddit;
       }
 
       if ((prefs.subreddit.indexOf("/m/") === -1) &&
@@ -154,16 +154,20 @@ document.addEventListener('DOMContentLoaded', function() {
         prefs.subreddit = "/r" + prefs.subreddit;
       }
 
-      var url = "http://www.reddit.com" + (prefs.subreddit) + "/top.json?sort=top&t=" +(prefs.period || "day");
+      var url = "http://www.reddit.com" + (prefs.subreddit) + "/" + (prefs.sort || "top") + ".json";
+      if (prefs.sort === "top" || prefs.sort === "controversial") {
+        url += ".?t=" + (prefs.period || "day");
+      }
+
       getAllPosts(url, { nsfw: prefs.nsfw });
     });
 
   document.querySelector("[role='settings']").addEventListener("click", function() {
-    if(chrome.runtime.openOptionsPage) {
-      chrome.runtime.openOptionsPage();
-    } else {
-      window.open(chrome.runtime.getURL('options.html'));
-    }
+      if(chrome.runtime.openOptionsPage) {
+        chrome.runtime.openOptionsPage();
+      } else {
+        window.open(chrome.runtime.getURL('options.html'));
+      }
   });
 });
 

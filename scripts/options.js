@@ -1,18 +1,45 @@
-function onClickSave() {
-  var subreddit = document.querySelector("[role='subreddit']").value,
-      period = document.querySelector("[role='period']").value,
-      nsfw = document.querySelector("[role='nsfw']").checked,
-      _24hr = document.querySelector("[role='_24hr']").checked;
-      showTime = document.querySelector("[role='showTime']").checked;
-      showDate = document.querySelector("[role='showDate']").checked;
+var subredditEl = document.querySelector("[role='subreddit']"),
+    sortEl = document.querySelector("[role='sort']"),
+    periodEl = document.querySelector("[role='period']"),
+    nsfwEl = document.querySelector("[role='nsfw']"),
+    _24hrEl = document.querySelector("[role='_24hr']");
+    showTimeEl = document.querySelector("[role='showTime']");
+    showDateEl = document.querySelector("[role='showDate']");
 
+function restoreOptions() {
+  chrome.storage.sync.get({
+    subreddit: "/r/EarthPorn",
+    sort: "top",
+    period: "day",
+    nsfw: false,
+    _24hr: false,
+    showTime: true,
+    showDate: true
+  }, function(items) {
+    subredditEl.value = items.subreddit;
+    sortEl.value = items.sort;
+    periodEl.value = items.period;
+    nsfwEl.checked = items.nsfw;
+    _24hrEl.checked = items._24hr;
+    showTimeEl.checked = items.showTime;
+    showDateEl.checked = items.showDate;
+    checkPeriodDisabled();
+  });
+}
+
+function checkPeriodDisabled() {
+  periodEl.disabled = (sortEl.value === "top" || sortEl.value === "controversial") ? false : true;
+}
+
+function onClickSave() {
   chrome.storage.sync.set({
-    subreddit: subreddit,
-    period: period,
-    nsfw: nsfw,
-    _24hr: _24hr,
-    showTime: showTime,
-    showDate: showDate
+    subreddit: subredditEl.value,
+    sort: sortEl.value,
+    period: periodEl.value,
+    nsfw: nsfwEl.checked,
+    _24hr: _24hrEl.checked,
+    showTime: showTimeEl.checked,
+    showDate: showDateEl.checked
   }, function() {
     var status = document.querySelector("[role='status']");
     status.textContent = "Saved!";
@@ -22,24 +49,7 @@ function onClickSave() {
   });
 }
 
-function restoreOptions() {
-  chrome.storage.sync.get({
-    subreddit: "/r/EarthPorn",
-    period: "day",
-    nsfw: false,
-    _24hr: false,
-    showTime: true,
-    showDate: true
-  }, function(items) {
-    document.querySelector("[role='subreddit']").value = items.subreddit;
-    document.querySelector("[role='period']").value = items.period;
-    document.querySelector("[role='nsfw']").checked = items.nsfw;
-    document.querySelector("[role='_24hr']").checked = items._24hr;
-    document.querySelector("[role='showTime']").checked = items.showTime;
-    document.querySelector("[role='showDate']").checked = items.showDate;
-  });
-}
-
 document.addEventListener("DOMContentLoaded", restoreOptions);
+sortEl.addEventListener("change", checkPeriodDisabled);
 document.querySelector("[role='save']").addEventListener("click",
     onClickSave);
