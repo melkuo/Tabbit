@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       var url = "http://www.reddit.com" + (prefs.subreddit) + "/" + (prefs.sort || "top") + ".json";
       if (prefs.sort === "top" || prefs.sort === "controversial") {
-        url += ".?t=" + (prefs.period || "day");
+        url += "?t=" + (prefs.period || "day");
       }
 
       getAllPosts(url, { nsfw: prefs.nsfw });
