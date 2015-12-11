@@ -26,8 +26,9 @@ function formatDate(now) {
   return days[day] + ", " + months[month] + " " + dayOfMonth;
 }
 
-function setTime(now, _24hr) {
-  var time = formatTime(now, _24hr),
+function setTime(_24hr) {
+  var now = new Date;
+      time = formatTime(now, _24hr),
       parts = time.split(" ");
 
   timeEl = document.querySelector("[role='time']");
@@ -40,8 +41,8 @@ function setTime(now, _24hr) {
   }
 }
 
-function setDate(now) {
-  document.querySelector("[role='date']").textContent = formatDate(now);
+function setDate() {
+  document.querySelector("[role='date']").textContent = formatDate(new Date);
 }
 
 function getType(post) {
@@ -131,16 +132,14 @@ document.addEventListener('DOMContentLoaded', function() {
   chrome.storage.sync.get(
     null
     , function(prefs) {
-      var now = new Date();
-
       if (prefs.showTime) {
-        setTime(now, prefs._24hr);
-        setInterval(function() { setTime(now, prefs._24hr); } , 1000);
+        setTime(prefs._24hr);
+        setInterval(function() { setTime(prefs._24hr); } , 1000);
       }
 
       if (prefs.showDate) {
-        setDate(now);
-        setInterval(function() { setDate(now); } , 1000);
+        setDate();
+        setInterval(function() { setDate(); } , 1000);
       }
 
       if (!prefs.subreddit) { prefs.subreddit = "/r/EarthPorn"; }
