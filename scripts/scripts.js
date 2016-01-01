@@ -132,16 +132,9 @@ document.addEventListener('DOMContentLoaded', function() {
   chrome.storage.sync.get(
     null
     , function(prefs) {
-      if (prefs.showTime) {
-        setTime(prefs._24hr);
-        setInterval(function() { setTime(prefs._24hr); } , 1000);
-      }
-
-      if (prefs.showDate) {
-        setDate();
-        setInterval(function() { setDate(); } , 1000);
-      }
-
+      // Set everything up
+      if (prefs.showTime === undefined) { prefs.showTime = true; }
+      if (prefs.showDate === undefined) { prefs.showDate = true; }
       if (!prefs.subreddit) { prefs.subreddit = "/r/EarthPorn"; }
 
       if (prefs.subreddit.charAt(0) !== "/") {
@@ -156,6 +149,17 @@ document.addEventListener('DOMContentLoaded', function() {
       var url = "http://www.reddit.com" + (prefs.subreddit) + "/" + (prefs.sort || "top") + ".json";
       if (prefs.sort === "top" || prefs.sort === "controversial") {
         url += "?t=" + (prefs.period || "day");
+      }
+
+      // Execute
+      if (prefs.showTime) {
+        setTime(prefs._24hr);
+        setInterval(function() { setTime(prefs._24hr); } , 1000);
+      }
+
+      if (prefs.showDate) {
+        setDate();
+        setInterval(function() { setDate(); } , 1000);
       }
 
       getAllPosts(url, { nsfw: prefs.nsfw });
