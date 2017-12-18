@@ -115,7 +115,7 @@ function setPost(post) {
     document.querySelector("[role='link']").setAttribute("href",
       "http://www.reddit.com" + post.data.permalink);
   }
-  document.querySelector("[role='title']").textContent = post.data.title;
+  document.querySelector("[role='title']").innerHTML = post.data.title;
 
   linkIconEl = document.querySelector("[role='link-icon']");
   if (post.data.warning) {

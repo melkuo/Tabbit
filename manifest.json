@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Tabbit",
-  "version": "1.2.3",
+  "version": "1.3",
   "description": "See the top image from a Reddit subreddit whenever you open a new tab.",
   "author": "Melody Kuo",
   "chrome_url_overrides": {
