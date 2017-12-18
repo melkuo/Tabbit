@@ -61,12 +61,33 @@ function getPost(data, prefs) {
   var posts = data.data.children;
 
   for (var i = 0; i < posts.length; i++) {
+    // Check NSFW
     if (prefs.nsfw === false && posts[i].data.over_18 === true) { continue; }
 
+    // Check type
     var type = getType(posts[i]);
     if (type === "unsupported") {
       continue;
-    } else if (type === "gif" || type === "noPreview") {
+    }
+
+    // Check width
+    if (type === "preview") {
+      var width = posts[i].data.preview.images[0].source.width;
+      var widestImageWidth = 0;
+      var widestImageIndex = 0;
+      if (width < window.innerWidth) {
+        if (width > widestImageWidth) { widestImageIndex = i; }
+
+        if (i === posts.length - 1) {
+          i = widestImageIndex;
+        } else {
+          continue;
+        }
+      }
+    }
+
+    // Return
+    if (type === "gif" || type === "noPreview") {
       posts[i].data.imgUrl = posts[i].data.url;
       return posts[i];
     } else if (type === "preview") {
