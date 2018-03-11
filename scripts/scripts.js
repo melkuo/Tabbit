@@ -45,18 +45,6 @@ function setDate() {
   document.querySelector("[role='date']").textContent = formatDate(new Date);
 }
 
-function getType(post) {
-  if (!/\.(jpg|png|gif)(?!v)/.test(post.data.url)) {
-    return "unsupported";
-  } else if (/\.gif/.test(post.data.url)) {
-    return "gif";
-  } else if (!post.data.preview) {
-    return "noPreview";
-  } else {
-    return "preview";
-  }
-}
-
 function getPost(data, prefs) {
   var posts = data.data.children;
 
@@ -65,39 +53,27 @@ function getPost(data, prefs) {
     if (prefs.nsfw === false && posts[i].data.over_18 === true) { continue; }
 
     // Check type
-    var type = getType(posts[i]);
-    if (type === "unsupported") {
+    if (!/\.(jpg|png|gif)(?!v)/.test(posts[i].data.url)) {
       continue;
     }
 
     // Check width
-    if (type === "preview") {
-      var width = posts[i].data.preview.images[0].source.width;
-      var widestImageWidth = 0;
-      var widestImageIndex = 0;
-      if (width < window.innerWidth) {
-        if (width > widestImageWidth) { widestImageIndex = i; }
+    var width = posts[i].data.preview.images[0].source.width;
+    var widestImageWidth = 0;
+    var widestImageIndex = 0;
+    if (width < window.innerWidth) {
+      if (width > widestImageWidth) { widestImageIndex = i; }
 
-        if (i === posts.length - 1) {
-          i = widestImageIndex;
-        } else {
-          continue;
-        }
+      if (i === posts.length - 1) {
+        i = widestImageIndex;
+      } else {
+        continue;
       }
     }
 
     // Return
-    if (type === "gif" || type === "noPreview") {
-      posts[i].data.imgUrl = posts[i].data.url;
-      return posts[i];
-    } else if (type === "preview") {
-      var images = posts[i].data.preview.images;
-
-      for (var j = 0; j < images.length; j++) {
-        posts[i].data.imgUrl = images[j].source.url;
-        return posts[i];
-      }
-    }
+    posts[i].data.imgUrl = posts[i].data.url;
+    return posts[i];
   }
 
   return { data: {
@@ -109,6 +85,7 @@ function getPost(data, prefs) {
 }
 
 function setPost(post) {
+  //console.log(post.data)
   document.querySelector("[role='background']").style.backgroundImage =
     "url('" + post.data.imgUrl + "')";
   if (post.data.permalink) {
