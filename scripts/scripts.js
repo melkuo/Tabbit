@@ -53,7 +53,7 @@ function getPost(data, prefs) {
     if (prefs.nsfw === false && posts[i].data.over_18 === true) { continue; }
 
     // Check type
-    if (!/\.(jpg|png|gif)(?!v)/.test(posts[i].data.url)) {
+    if (!/\.(jpg|jpeg|png|gif)(?!v)/.test(posts[i].data.url)) {
       continue;
     }
 
