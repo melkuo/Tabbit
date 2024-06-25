@@ -45,12 +45,12 @@ function setDate() {
   document.querySelector("[role='date']").textContent = formatDate(new Date);
 }
 
-function getPost(data, prefs) {
+function getPost(data) {
   var posts = data.data.children;
 
   for (var i = 0; i < posts.length; i++) {
-    // Check NSFW
-    if (prefs.nsfw === false && posts[i].data.over_18 === true) { continue; }
+    // Skip NFSW posts
+    if (posts[i].data.over_18 === true) { continue; }
 
     // Check type
     if (!/\.(jpg|jpeg|png|gif)(?!v)/.test(posts[i].data.url)) {
@@ -104,12 +104,12 @@ function setPost(post) {
   document.querySelector("[role='background']").classList.remove("hide");
 }
 
-function getAllPosts(url, prefs) {
+function getAllPosts(url) {
   var req = new XMLHttpRequest();
   req.onload = function() {
     if (req.readyState === 4) {
       if (req.status === 200) {
-        setPost(getPost(JSON.parse(this.responseText), prefs));
+        setPost(getPost(JSON.parse(this.responseText)));
       } else {
         setPost({
           data: {
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setInterval(function() { setDate(); } , 1000);
       }
 
-      getAllPosts(url, { nsfw: prefs.nsfw });
+      getAllPosts(url);
     });
 
   document.querySelector("[role='settings']").addEventListener("click", function() {

@@ -1,7 +1,6 @@
 var subredditEl = document.querySelector("[role='subreddit']"),
     sortEl = document.querySelector("[role='sort']"),
     periodEl = document.querySelector("[role='period']"),
-    nsfwEl = document.querySelector("[role='nsfw']"),
     _24hrEl = document.querySelector("[role='_24hr']");
     showTimeEl = document.querySelector("[role='showTime']");
     showDateEl = document.querySelector("[role='showDate']");
@@ -11,7 +10,6 @@ function restoreOptions() {
     subreddit: "/r/EarthPorn",
     sort: "top",
     period: "day",
-    nsfw: false,
     _24hr: false,
     showTime: true,
     showDate: true
@@ -19,7 +17,6 @@ function restoreOptions() {
     subredditEl.value = items.subreddit;
     sortEl.value = items.sort;
     periodEl.value = items.period;
-    nsfwEl.checked = items.nsfw;
     _24hrEl.checked = items._24hr;
     showTimeEl.checked = items.showTime;
     showDateEl.checked = items.showDate;
@@ -36,7 +33,6 @@ function onClickSave() {
     subreddit: subredditEl.value,
     sort: sortEl.value,
     period: periodEl.value,
-    nsfw: nsfwEl.checked,
     _24hr: _24hrEl.checked,
     showTime: showTimeEl.checked,
     showDate: showDateEl.checked

@@ -8,7 +8,6 @@ The following settings are currently available:
   * From which subreddit or multireddit
   * Sort type - top, hot, new, rising, controversial
   * Time period - from the past hour to past year
-  * NSFW on or off
 * Time and date preferences:
   * 12 or 24 hour clock
   * Hide or show time
